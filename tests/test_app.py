@@ -1,4 +1,4 @@
-from app.app import dedupe_header  # 注意导入路径：从app目录的app.py导入
+from app import dedupe_header  # 注意导入路径：从app目录的app.py导入
 
 
 def test_unique_columns():
