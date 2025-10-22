@@ -1,4 +1,15 @@
-from app import dedupe_header  # 注意导入路径：从app目录的app.py导入
+import sys
+import os
+
+# 获取当前测试文件（test_app.py）的目录路径
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# 项目根目录是当前目录的上一级（tests -> dedupe-project）
+project_root = os.path.dirname(current_dir)
+# 将项目根目录加入搜索路径
+sys.path.append(project_root)
+
+# 之后再导入 app 模块
+from app.app import dedupe_header  # 注意：这里需要明确是 app 目录下的 app.py
 
 
 def test_unique_columns():
