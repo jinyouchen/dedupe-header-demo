@@ -1,4 +1,4 @@
-name: Docker Build
+name: Python Tests
 
 on:
   push:
@@ -11,11 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-    - name: Build and push
-      uses: docker/build-push-action@v5
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
       with:
-        context: .
-        push: false  # 仅构建，不推送到镜像仓库（如需推送可改为true并配置凭证）
-        tags: dedupe-app:latest  # 镜像标签
+        python-version: "3.12"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    # 新增：设置PYTHONPATH为项目根目录（.代表当前目录，即CI环境的项目根目录）
+    - name: Set Python path
+      run: export PYTHONPATH=.
+    - name: Run tests
+      run: |
+        pytest tests/test_app.py -v  # 此时Python能识别app模块
